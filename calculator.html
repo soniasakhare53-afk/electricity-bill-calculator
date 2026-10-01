@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Electra | Electricity Bill Calculator</title>
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fb;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9f0;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #1769aa;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #1769aa;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .back-home {
+            text-decoration: none;
+            color: #1769aa;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: #687386;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e3e8f0;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(20, 40, 80, 0.05);
+        }
+
+        .card-title {
+            font-size: 19px;
+            margin-bottom: 20px;
+            color: #172033;
+        }
+
+        .section-title {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e7ebf1;
+            font-size: 16px;
+            color: #1769aa;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 7px;
+            color: #344054;
+        }
+
+        .hint {
+            display: block;
+            margin-top: 5px;
+            color: #8a94a6;
+            font-size: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ccd4df;
+            border-radius: 9px;
+            font-size: 15px;
+            color: #172033;
+            background: #ffffff;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1769aa;
+            box-shadow: 0 0 0 3px rgba(23, 105, 170, 0.10);
+        }
+
+
+        /* =========================
+           TWO COLUMN INPUTS
+        ========================= */
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .calculate-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #1769aa;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .calculate-btn:hover {
+            background: #0f5488;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-card {
+            min-height: 250px;
+        }
+
+        .empty-result {
+            text-align: center;
+            padding: 55px 15px;
+            color: #8993a4;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .month-badge {
+            background: #eaf4ff;
+            color: #1769aa;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           CALCULATION STEPS
+        ========================= */
+
+        .calculation-step {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .step-left {
+            color: #5f6b7c;
+            font-size: 14px;
+        }
+
+        .step-right {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .energy-total {
+            background: #f5f8fc;
+            border-radius: 9px;
+            padding: 14px;
+            margin-top: 15px;
+        }
+
+
+        /* =========================
+           FINAL BILL
+        ========================= */
+
+        .final-bill {
+            margin-top: 20px;
+            padding: 22px;
+            background: #1769aa;
+            color: white;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .final-bill small {
+            display: block;
+            opacity: 0.85;
+            margin-bottom: 7px;
+        }
+
+        .final-bill h2 {
+            font-size: 30px;
+        }
+
+
+        /* =========================
+           HISTORY
+        ========================= */
+
+        .history-section {
+            margin-top: 25px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .clear-btn {
+            border: none;
+            background: transparent;
+            color: #d14343;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .history-item {
+            border: 1px solid #e3e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .history-month {
+            font-weight: bold;
+        }
+
+        .history-units {
+            color: #697586;
+            font-size: 13px;
+        }
+
+        .history-amount {
+            font-weight: bold;
+            color: #1769aa;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error {
+            background: #fff1f1;
+            border: 1px solid #f2b8b8;
+            color: #b42318;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 15px 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 27px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .main {
+                margin-top: 25px;
+                padding: 0 12px;
+            }
+
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="topbar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ⚡
+            </div>
+
+            Electra
+
+        </div>
+
+        <a href="index.html" class="back-home">
+            ← Home
+        </a>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+
+        <div class="page-heading">
+
+            <h1>Electricity Bill Calculator</h1>
+
+            <p>
+                Enter your monthly consumption and tariff details
+                to calculate your electricity bill.
+            </p>
+
+        </div>
+
+
+
+        <div class="layout">
+
+
+            <!-- =========================
+                 INPUT CARD
+            ========================= -->
+
+            <section class="card">
+
+                <h2 class="card-title">
+                    Bill Information
+                </h2>
+
+
+                <!-- MONTH -->
+
+                <div class="form-group">
+
+                    <label for="month">
+                        Billing Month
+                    </label>
+
+                    <!-- MONTH CALENDAR -->
+
+                    <input
+                        type="month"
+                        id="month"
+                    >
+
+                    <span class="hint">
+                        Select the month from the calendar.
+                    </span>
+
+                </div>
+
+
+
+                <!-- UNITS -->
+
+                <div class="form-group">
+
+                    <label for="units">
+                        Electricity Consumed
+                    </label>
+
+                    <input
+                        type="number"
+                        id="units"
+                        placeholder="Enter units consumed"
+                        min="0"
+                        step="0.01"
+                    >
+
+                    <span class="hint">
+                        Enter your monthly consumption in units (kWh).
+                    </span>
+
+                </div>
+
+
+
+                <!-- TARIFF -->
+
+                <h3 class="section-title">
+                    ⚡ Tariff Rates
+                </h3>
+
+
+                <div class="two-columns">
+
+
+                    <div class="form-group">
+
+                        <label for="rate1">
+                            First 100 Units
+                        </label>
+
+                        <input
+                            type="number"
+                            id="rate1"
+                            placeholder="₹ / unit"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="rate2">
+                            101 – 300 Units
+                        </label>
+
+                        <input
+                            type="number"
+                            id="rate2"
+                            placeholder="₹ / unit"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="rate3">
+                        Above 300 Units
+                    </label>
+
+                    <input
+                        type="number"
+                        id="rate3"
+                        placeholder="₹ / unit"
+                        min="0"
+                        step="0.01"
+                    >
+
+                </div>
+
+
+
+                <!-- EXTRA CHARGES -->
+
+                <h3 class="section-title">
+                    💰 Additional Charges
+                </h3>
+
+
+                <div class="two-columns">
+
+
+                    <div class="form-group">
+
+                        <label for="fixedCharge">
+                            Fixed Charge
+                        </label>
+
+                        <input
+                            type="number"
+                            id="fixedCharge"
+                            placeholder="₹"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="tax">
+                            Tax
+                        </label>
+
+                        <input
+                            type="number"
+                            id="tax"
+                            placeholder="%"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CALCULATE -->
+
+                <button
+                    type="button"
+                    class="calculate-btn"
+                    onclick="calculateBill()"
+                >
+                    Calculate Bill
+                </button>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 RESULT CARD
+            ========================= -->
+
+            <section class="card result-card">
+
+                <div id="result">
+
+                    <div class="empty-result">
+
+                        <div class="empty-icon">
+                            ⚡
+                        </div>
+
+                        <h3>
+                            Your bill will appear here
+                        </h3>
+
+                        <p style="margin-top:8px;">
+                            Enter your details and click
+                            <strong>Calculate Bill</strong>.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             HISTORY
+        ========================= -->
+
+        <section class="card history-section">
+
+            <div class="history-header">
+
+                <h2 class="card-title" style="margin:0;">
+                    📊 Recent Bills
+                </h2>
+
+                <button
+                    type="button"
+                    class="clear-btn"
+                    onclick="clearHistory()"
+                >
+                    Clear History
+                </button>
+
+            </div>
+
+
+            <div id="history">
+
+                <p style="color:#8993a4;">
+                    No previous bills yet.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        function calculateBill() {
+
+            const month =
+                document.getElementById("month").value;
+
+            const units =
+                parseFloat(
+                    document.getElementById("units").value
+                );
+
+            const rate1 =
+                parseFloat(
+                    document.getElementById("rate1").value
+                );
+
+            const rate2 =
+                parseFloat(
+                    document.getElementById("rate2").value
+                );
+
+            const rate3 =
+                parseFloat(
+                    document.getElementById("rate3").value
+                );
+
+            const fixedCharge =
+                parseFloat(
+                    document.getElementById("fixedCharge").value
+                );
+
+            const taxRate =
+                parseFloat(
+                    document.getElementById("tax").value
+                );
+
+
+            /* =========================
+               VALIDATION
+            ========================= */
+
+            if (!month) {
+
+                showError("Please select the billing month.");
+
+                return;
+            }
+
+
+            if (
+                isNaN(units) ||
+                isNaN(rate1) ||
+                isNaN(rate2) ||
+                isNaN(rate3) ||
+                isNaN(fixedCharge) ||
+                isNaN(taxRate)
+            ) {
+
+                showError(
+                    "Please fill in all the billing details."
+                );
+
+                return;
+            }
+
+
+            if (units < 0) {
+
+                showError(
+                    "Electricity units cannot be negative."
+                );
+
+                return;
+            }
+
+
+            if (
+                rate1 < 0 ||
+                rate2 < 0 ||
+                rate3 < 0 ||
+                fixedCharge < 0 ||
+                taxRate < 0
+            ) {
+
+                showError(
+                    "Rates and charges cannot be negative."
+                );
+
+                return;
+            }
+
+
+
+            /* =========================
+               SLAB CALCULATION
+            ========================= */
+
+            let first100 = 0;
+            let second200 = 0;
+            let above300 = 0;
+
+
+            if (units <= 100) {
+
+                first100 = units;
+
+            } else {
+
+                first100 = 100;
+
+            }
+
+
+            if (units > 100) {
+
+                if (units <= 300) {
+
+                    second200 = units - 100;
+
+                } else {
+
+                    second200 = 200;
+
+                }
+
+            }
+
+
+            if (units > 300) {
+
+                above300 = units - 300;
+
+            }
+
+
+
+            /* =========================
+               CHARGES
+            ========================= */
+
+            const charge1 =
+                first100 * rate1;
+
+            const charge2 =
+                second200 * rate2;
+
+            const charge3 =
+                above300 * rate3;
+
+
+            const energyCharge =
+                charge1 +
+                charge2 +
+                charge3;
+
+
+            const subtotal =
+                energyCharge +
+                fixedCharge;
+
+
+            const taxAmount =
+                subtotal * taxRate / 100;
+
+
+            const finalBill =
+                subtotal +
+                taxAmount;
+
+
+
+            /* =========================
+               FORMAT MONTH
+            ========================= */
+
+            const dateParts =
+                month.split("-");
+
+            const year =
+                parseInt(dateParts[0]);
+
+            const monthNumber =
+                parseInt(dateParts[1]);
+
+
+            const date =
+                new Date(
+                    Date.UTC(year, monthNumber - 1, 1)
+                );
+
+
+            const monthName =
+                date.toLocaleDateString(
+                    "en-IN",
+                    {
+                        month: "long",
+                        year: "numeric",
+                        timeZone: "UTC"
+                    }
+                );
+
+
+
+            /* =========================
+               DISPLAY RESULT
+            ========================= */
+
+            document.getElementById("result").innerHTML = `
+
+                <div class="result-header">
+
+                    <div>
+
+                        <h2>
+                            Bill Summary
+                        </h2>
+
+                        <p style="color:#687386; margin-top:5px;">
+                            ${units} units consumed
+                        </p>
+
+                    </div>
+
+                    <span class="month-badge">
+                        ${monthName}
+                    </span>
+
+                </div>
+
+
+                <div class="calculation-step">
+
+                    <span class="step-left">
+                        First 100 units
+                    </span>
+
+                    <span class="step-right">
+                        ${first100} × ₹${rate1.toFixed(2)}
+                        = ₹${charge1.toFixed(2)}
+                    </span>
+
+                </div>
+
+
+                <div class="calculation-step">
+
+                    <span class="step-left">
+                        101 – 300 units
+                    </span>
+
+                    <span class="step-right">
+                        ${second200} × ₹${rate2.toFixed(2)}
+                        = ₹${charge2.toFixed(2)}
+                    </span>
+
+                </div>
+
+
+                <div class="calculation-step">
+
+                    <span class="step-left">
+                        Above 300 units
+                    </span>
+
+                    <span class="step-right">
+                        ${above300} × ₹${rate3.toFixed(2)}
+                        = ₹${charge3.toFixed(2)}
+                    </span>
+
+                </div>
+
+
+                <div class="energy-total">
+
+                    <div class="calculation-step">
+
+                        <span class="step-left">
+                            Energy Charges
+                        </span>
+
+                        <span class="step-right">
+                            ₹${energyCharge.toFixed(2)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="calculation-step">
+
+                        <span class="step-left">
+                            Fixed Charge
+                        </span>
+
+                        <span class="step-right">
+                            ₹${fixedCharge.toFixed(2)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="calculation-step">
+
+                        <span class="step-left">
+                            Subtotal
+                        </span>
+
+                        <span class="step-right">
+                            ₹${subtotal.toFixed(2)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="calculation-step">
+
+                        <span class="step-left">
+                            Tax (${taxRate}%)
+                        </span>
+
+                        <span class="step-right">
+                            ₹${taxAmount.toFixed(2)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="final-bill">
+
+                    <small>
+                        TOTAL ELECTRICITY BILL
+                    </small>
+
+                    <h2>
+                        ₹${finalBill.toFixed(2)}
+                    </h2>
+
+                </div>
+
+            `;
+
+
+
+            /* =========================
+               SAVE BILL
+            ========================= */
+
+            saveBill(
+                monthName,
+                units,
+                finalBill
+            );
+
+        }
+
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        function showError(message) {
+
+            document.getElementById("result").innerHTML = `
+
+                <div class="error">
+                    ⚠️ ${message}
+                </div>
+
+            `;
+
+        }
+
+
+
+        /* =========================
+           SAVE BILL
+        ========================= */
+
+        function saveBill(
+            month,
+            units,
+            amount
+        ) {
+
+            let bills =
+                JSON.parse(
+                    localStorage.getItem(
+                        "electricityBills"
+                    )
+                ) || [];
+
+
+            bills.push({
+
+                month: month,
+
+                units: units,
+
+                amount: amount
+
+            });
+
+
+            /* Keep only last 5 */
+
+            if (bills.length > 5) {
+
+                bills =
+                    bills.slice(-5);
+
+            }
+
+
+            localStorage.setItem(
+                "electricityBills",
+                JSON.stringify(bills)
+            );
+
+
+            displayHistory();
+
+        }
+
+
+
+        /* =========================
+           HISTORY
+        ========================= */
+
+        function displayHistory() {
+
+            const history =
+                document.getElementById("history");
+
+
+            let bills =
+                JSON.parse(
+                    localStorage.getItem(
+                        "electricityBills"
+                    )
+                ) || [];
+
+
+            if (bills.length === 0) {
+
+                history.innerHTML = `
+
+                    <p style="color:#8993a4;">
+                        No previous bills yet.
+                    </p>
+
+                `;
+
+                return;
+
+            }
+
+
+            history.innerHTML = "";
+
+
+            bills
+                .slice()
+                .reverse()
+                .forEach(function(bill) {
+
+                    history.innerHTML += `
+
+                        <div class="history-item">
+
+                            <div>
+
+                                <div class="history-month">
+                                    ${bill.month}
+                                </div>
+
+                                <div class="history-units">
+                                    ${bill.units} units consumed
+                                </div>
+
+                            </div>
+
+                            <div class="history-amount">
+                                ₹${Number(
+                                    bill.amount
+                                ).toFixed(2)}
+                            </div>
+
+                        </div>
+
+                    `;
+
+                });
+
+        }
+
+
+
+        /* =========================
+           CLEAR HISTORY
+        ========================= */
+
+        function clearHistory() {
+
+            const confirmClear =
+                confirm(
+                    "Are you sure you want to clear your bill history?"
+                );
+
+
+            if (!confirmClear) {
+
+                return;
+
+            }
+
+
+            localStorage.removeItem(
+                "electricityBills"
+            );
+
+
+            displayHistory();
+
+        }
+
+
+
+        /* =========================
+           LOAD HISTORY
+        ========================= */
+
+        displayHistory();
+
+    </script>
+
+</body>
+
+</html>
